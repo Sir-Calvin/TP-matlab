@@ -34,7 +34,7 @@ function buttonCargar_Callback(hObject, eventdata, handles)
     axes(handles.grafica);
     newplot,
     plot(X,y,'r*');
-    axis([-1 1.5 -0.5 5]);
+    axis([handles.a-1 handles.b+1 -0.5 5]);
     axh = gca; % use current axes
     color = 'k'; % black, or [0 0 0]
     linestyle = ':'; % dotted
@@ -98,20 +98,24 @@ function btAproximar_Callback(hObject, eventdata, handles)
     %fam = [1 x x^2];
     %fam = [sqrt(1) sqrt(x) sqrt(x^2)]
     %fam = [1/(1+x^2) x/(1+x^2) x^2/(1+x^2)];
+    %fam = [(19/4)*x+2 900*x+1 (930/300)*x+1];
     fam = [1/(x+1) x/(x+1) x^2/(x+1)]
     
     A=getMatrixA(fam,X);
     res(x)=aproxDiscreta(A,Y);
     axes(handles.grafica);
     hold on
-    plot(X,res(X));
+    grafica=plot(X,res(X));
 
-    axis([-1 1.5 -0.5 5]);
+    axis([handles.a-1 handles.b+1 -0.5 5]);
     axh = gca; % use current axes
     color = 'k'; % black, or [0 0 0]
     linestyle = ':'; % dotted
     line(get(axh,'XLim'), [0 0], 'Color', color, 'LineStyle', linestyle);
     line([0 0], get(axh,'YLim'), 'Color', color, 'LineStyle', linestyle);
+    aux=arrayfun(@char, fam, 'uniform', 0);
+    legend(grafica,strjoin(aux,', '));
+    
     
     xlabel('x')
     ylabel('y')
