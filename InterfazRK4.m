@@ -18,17 +18,13 @@ else
 end
 
 function InterfazRK4_OpeningFcn(hObject, eventdata, handles, varargin)
-
 handles.output = hObject;
-
 guidata(hObject, handles);
 
 function varargout = InterfazRK4_OutputFcn(hObject, eventdata, handles) 
 varargout{1} = handles.output;
 
-
 function buttonCargar_Callback(hObject, eventdata, handles)
-    condicion = [1;1.4;2.1];
     [X Y] = rk4(handles.funcion,handles.a,handles.b,handles.condiciones,handles.h);
     y = Y(1,:);
     axes(handles.grafica);
@@ -90,8 +86,7 @@ end
 function btAproximar_Callback(hObject, eventdata, handles)
     
     syms x
-    condicion = [1;1.4;2.1];
-    [X Y] = rk4(handles.funcion,handles.a,handles.b,handles.condicion,handles.h);
+    [X Y] = rk4(handles.funcion,handles.a,handles.b,handles.condiciones,handles.h);
     
     fam = [1 x x^2];
     %fam = [sqrt(1) sqrt(x) sqrt(x^2)]
@@ -133,7 +128,7 @@ end
 
 function txtBoxCondiciones_Callback(hObject, eventdata, handles)
     c = get(hObject,'String');
-    c = mat2str(c);
+    c = str2num(c);
     handles.condiciones = c;
     guidata(hObject,handles);
 
