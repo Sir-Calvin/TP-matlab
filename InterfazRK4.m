@@ -30,6 +30,7 @@ varargout{1} = handles.output;
 function buttonCargar_Callback(hObject, eventdata, handles)
     condicion = [1;1.4;2.1];
     [X Y] = rk4(handles.a,handles.b,condicion,handles.h,handles.orden);
+    cla reset;
     y = Y(1,:);
     axes(handles.grafica);
     newplot,
@@ -98,8 +99,10 @@ function btAproximar_Callback(hObject, eventdata, handles)
     %fam = [1 x x^2];
     %fam = [sqrt(1) sqrt(x) sqrt(x^2)]
     %fam = [1/(1+x^2) x/(1+x^2) x^2/(1+x^2)];
-    %fam = [(19/4)*x+2 900*x+1 (930/300)*x+1];
-    fam = [1/(x+1) x/(x+1) x^2/(x+1)]
+   
+    %fam = [1/(x+1) x/(x+1) x^2/(x+1)]
+    
+    fam = [1 x x^2]
     
     A=getMatrixA(fam,X);
     res(x)=aproxDiscreta(A,Y);
@@ -114,7 +117,7 @@ function btAproximar_Callback(hObject, eventdata, handles)
     line(get(axh,'XLim'), [0 0], 'Color', color, 'LineStyle', linestyle);
     line([0 0], get(axh,'YLim'), 'Color', color, 'LineStyle', linestyle);
     aux=arrayfun(@char, fam, 'uniform', 0);
-    legend(grafica,strjoin(aux,', '));
+    legend(grafica,strcat('Familia de Funciones:',strjoin(aux,', ')));
     
     
     xlabel('x')
@@ -127,3 +130,15 @@ function btAproximar_ButtonDownFcn(hObject, eventdata, handles)
 % hObject    handle to btAproximar (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+function txtBoxCondiciones_Callback(hObject, eventdata, handles)
+    c = get(hObject,'String');
+    c = mat2str(c);
+    handles.condiciones = c;
+    guidata(hObject,handles);
+
+function txtBoxCondiciones_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+

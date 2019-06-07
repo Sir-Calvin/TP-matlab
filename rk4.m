@@ -29,9 +29,9 @@
 %
 %   1.0000    1.3249    1.7548    2.3232    3.0847    4.1321
 
-function [X Y] = rk4 (f,a,b,condicion,h)
+function [X Y] = rk4 (a,b,condicion,h,orden)
 syms y(x);
-%f = diff(y,orden)==(x+y^2)/(1+y^2)+y*diff(y);
+f = diff(y,orden)==(x+y^2)/(1+y^2)+y*diff(y);
 V = odeToVectorField(f);
 M = matlabFunction(V,'vars',{'x','Y'});
 
