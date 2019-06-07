@@ -6,7 +6,6 @@
 %   h: es el tamaño de paso
 %   condicion: las condiciones iniciales segun la ecuacion diferencial
 %   (se pasa como vector columna)
-%   orden: es el orden de la EDO (ecuaciones diferenciales)
 %   ----------------------------------------------------------------------
 %   Esta funcion me permite el calcular los puntos por medio del metodo de
 %   Runge-Kutta de 4to orden a partir de una ecuacion diferencial de orden 
@@ -30,9 +29,9 @@
 %
 %   1.0000    1.3249    1.7548    2.3232    3.0847    4.1321
 
-function [X Y] = rk4 (a,b,condicion,h,orden)
+function [X Y] = rk4 (f,a,b,condicion,h)
 syms y(x);
-f = diff(y,orden)==(x+y^2)/(1+y^2)+y*diff(y);
+%f = diff(y,orden)==(x+y^2)/(1+y^2)+y*diff(y);
 V = odeToVectorField(f);
 M = matlabFunction(V,'vars',{'x','Y'});
 

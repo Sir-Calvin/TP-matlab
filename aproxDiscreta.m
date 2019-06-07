@@ -1,4 +1,4 @@
-ºfunction res = aproxDiscreta (A,Y)
+function res = aproxDiscreta (A,Y)
 syms x;
     AtA=transpose(A)*A;
     aux=((inv(AtA))*(transpose(A)*transpose(Y)));

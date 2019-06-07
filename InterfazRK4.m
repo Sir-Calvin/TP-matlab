@@ -29,7 +29,7 @@ varargout{1} = handles.output;
 
 function buttonCargar_Callback(hObject, eventdata, handles)
     condicion = [1;1.4;2.1];
-    [X Y] = rk4(handles.a,handles.b,condicion,handles.h,handles.orden);
+    [X Y] = rk4(handles.funcion,handles.a,handles.b,handles.condiciones,handles.h);
     y = Y(1,:);
     axes(handles.grafica);
     newplot,
@@ -77,7 +77,7 @@ end
 
 function txtBoxOrden_Callback(hObject, eventdata, handles)
     orden = get(hObject,'String');
-    handles.orden = str2double(orden);
+    handles.orden = orden;
     guidata(hObject,handles);
 
 function txtBoxOrden_CreateFcn(hObject, eventdata, handles)
@@ -88,17 +88,16 @@ end
 
 % --- Executes on button press in btAproximar.
 function btAproximar_Callback(hObject, eventdata, handles)
-% hObject    handle to btAproximar (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+    
     syms x
     condicion = [1;1.4;2.1];
-    [X Y] = rk4(handles.a,handles.b,condicion,handles.h,handles.orden);
+    [X Y] = rk4(handles.funcion,handles.a,handles.b,handles.condicion,handles.h);
     
-    %fam = [1 x x^2];
+    fam = [1 x x^2];
     %fam = [sqrt(1) sqrt(x) sqrt(x^2)]
     %fam = [1/(1+x^2) x/(1+x^2) x^2/(1+x^2)];
-    fam = [1/(x+1) x/(x+1) x^2/(x+1)]
+    %fam = [1/(x+1) x/(x+1) x^2/(x+1)]
+    %fam=[1 x]
     
     A=getMatrixA(fam,X);
     res(x)=aproxDiscreta(A,Y);
@@ -116,10 +115,29 @@ function btAproximar_Callback(hObject, eventdata, handles)
     xlabel('x')
     ylabel('y')
 
-
-% --- If Enable == 'on', executes on mouse press in 5 pixel border.
-% --- Otherwise, executes on mouse press in 5 pixel border or over btAproximar.
 function btAproximar_ButtonDownFcn(hObject, eventdata, handles)
-% hObject    handle to btAproximar (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+
+
+function txtBoxFunction_Callback(hObject, eventdata, handles)
+    syms y(x)
+    f = eval(strcat('diff(y,',handles.orden,')==',get(hObject,'String')));
+    handles.funcion = f;
+    guidata(hObject,handles);
+    
+
+function txtBoxFunction_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+function txtBoxCondiciones_Callback(hObject, eventdata, handles)
+    c = get(hObject,'String');
+    c = mat2str(c);
+    handles.condiciones = c;
+    guidata(hObject,handles);
+
+function txtBoxCondiciones_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
